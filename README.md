@@ -1,5 +1,5 @@
 # Trans-Core-M
-Details and codes will be released soon. Stay tuned! 
+Details and codes will be released soon. Stay tuned! :beers:
 
 ![framework](./assets/framework.png)
 
