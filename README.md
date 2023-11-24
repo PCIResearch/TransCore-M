@@ -28,7 +28,7 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # Weights
 
-1. vision encoder weight: https://huggingface.co/openai/clip-vit-large-patch14-336
+1. Vision encoder weight: https://huggingface.co/openai/clip-vit-large-patch14-336
 
 2. TransCore-M weight: https://huggingface.co/PCIResearch/TransCore_M
 
