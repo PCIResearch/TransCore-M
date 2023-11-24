@@ -26,7 +26,14 @@ conda activate transcorem
 pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
+# Weights
+
+1. vision encoder weight: https://huggingface.co/openai/clip-vit-large-patch14-336
+
+2. TransCore-M weight: https://huggingface.co/PCIResearch/TransCore_M
+
 # Inference
+
 ```shell
 cd Trans-Core-M
 CUDA_VISIBLE_DEVICES=0 python inference.py --model-path ./weights/transcorem_pci-v1.1_20231112 --vision-path ./weights/clip-vit-large-patch14-336
