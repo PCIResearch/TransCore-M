@@ -45,7 +45,7 @@ Our vision encoder model： clip-vit-large-patch14-336, you can download from ht
 ```
 
 # Demo
-demo: [demo_link](http://10.210.21.107:7860/)
+demo: [demo_link](http://123.249.36.167:82/?wework_cfm_code=OUGvQ%2BJaUrnG4qWwQQ3TCHPRNka5YXBQWGQa%2FTC2bCAm8PKw9d%2F6EwBCvtiSYljSsWs6t1Odmh%2FemGunAy8KKx4%3D)
 
 
 # 声明
