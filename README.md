@@ -1,4 +1,4 @@
-# PC_TransCore-M
+# PCI_TransCore-M
 
 Details and codes will be released soon. Stay tuned! 
 
@@ -11,7 +11,7 @@ Details and codes will be released soon. Stay tuned!
 PCI TransCore-M is a multimodal model, it's composed of a visual encoder and a language model. It enables content comprehension, recognition and multi-round conversations about pictures.
 
 - **Visual Encoder:** CLIP ViT-L/14
-- **Pre-trained LLM:** TansCore-M
+- **Pre-trained LLM:** PCITransGPT-13B
 
 # Install
 Our install environment：NVIDIA A800-SXM4-80GB，CUDA Version: 11.7
