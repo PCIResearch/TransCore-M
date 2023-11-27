@@ -4,7 +4,7 @@ Details and codes will be released soon. Stay tuned!
 
 ![](./assets/framework.png)
 
-<center>TransCoreM model architecture</center>
+<center>TransCore-M model architecture</center>
 
 
 # Overview
