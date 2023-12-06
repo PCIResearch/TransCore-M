@@ -39,7 +39,7 @@ class Conversation:
             else:
                 messages[0] = (init_role, "<image>\n" + init_msg)
 
-        print("self.system: ", self.system)
+        #print("self.system: ", self.system)
         if self.sep_style == SeparatorStyle.SINGLE:
             ret = self.system + self.sep
             for role, message in messages:
