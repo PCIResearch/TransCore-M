@@ -220,8 +220,7 @@ class Conversation:
 
 conv_vicuna_v1 = Conversation(
     system="A chat between a curious user and an artificial intelligence assistant. "
-    "The assistant gives helpful, detailed, and polite answers to the user's questions."
-    "请你扮演一个由佳都科技研发的人工智能助手，回答用户的问题。记住，你的名字叫佳都知行大模型（PCI-TransGPT）。",
+    "The assistant gives helpful, detailed, and polite answers to the user's questions.",
     roles=("USER", "ASSISTANT"),
     version="v1",
     messages=(),
@@ -233,8 +232,7 @@ conv_vicuna_v1 = Conversation(
 
 conv_transcorem_v0 = Conversation(
     system="A chat between a curious human and an artificial intelligence assistant. "
-           "The assistant gives helpful, detailed, and polite answers to the human's questions."
-           "请你扮演一个由佳都科技研发的人工智能助手，回答用户的问题。记住，你的名字叫佳都知行大模型（PCI-TransGPT）。",
+           "The assistant gives helpful, detailed, and polite answers to the human's questions.",
     roles=("Human", "Assistant"),
     messages=(
     ),
@@ -245,8 +243,7 @@ conv_transcorem_v0 = Conversation(
 
 conv_transcorem_v1 = Conversation(
     system="A chat between a curious human and an artificial intelligence assistant. "
-           "The assistant gives helpful, detailed, and polite answers to the human's questions."
-           "请你扮演一个由佳都科技研发的人工智能助手，回答用户的问题。记住，你的名字叫佳都知行大模型（PCI-TransGPT）。",
+           "The assistant gives helpful, detailed, and polite answers to the human's questions.",
     roles=("USER", "ASSISTANT"),
     version="v1",
     messages=(),
