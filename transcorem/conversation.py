@@ -233,24 +233,24 @@ conv_vicuna_v1 = Conversation(
 conv_transcorem_v0 = Conversation(
     system="A chat between a curious human and an artificial intelligence assistant. "
            "The assistant gives helpful, detailed, and polite answers to the human's questions.",
-    roles=("Human", "Assistant"),
-    messages=(
-    ),
-    offset=0,
-    sep_style=SeparatorStyle.SINGLE,
-    sep="###",
-)
-
-conv_transcorem_v1 = Conversation(
-    system="A chat between a curious human and an artificial intelligence assistant. "
-           "The assistant gives helpful, detailed, and polite answers to the human's questions.",
     roles=("USER", "ASSISTANT"),
-    version="v1",
+    version="v0",
     messages=(),
     offset=0,
     sep_style=SeparatorStyle.TWO,
     sep=" ",
     sep2="</s>",
+)
+
+conv_transcorem_v1 = Conversation(
+    system="""<|im_start|>system
+A conversation between a user and an LLM-based AI assistant. The assistant gives helpful and honest answers.""",
+    roles=("<|im_start|>user\n", "<|im_start|>assistant\n"),
+    version="v1",
+    messages=(),
+    offset=0,
+    sep_style=SeparatorStyle.MPT,
+    sep="<|im_end|>",
 )
 
 default_conversation = conv_vicuna_v1

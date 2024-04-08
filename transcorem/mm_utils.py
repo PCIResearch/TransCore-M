@@ -3,6 +3,7 @@ from io import BytesIO
 import base64
 
 import torch
+import numpy as np
 from transformers import StoppingCriteria
 from transcorem.constants import IMAGE_TOKEN_INDEX
 
@@ -98,3 +99,63 @@ class KeywordsStoppingCriteria(StoppingCriteria):
             if keyword in outputs:
                 return True
         return False
+
+def process_image(image, image_processor, model_cfg):
+    image_aspect_ratio = getattr(model_cfg, "image_aspect_ratio", None)
+    if image_aspect_ratio == 'pad':
+        image = expand2square(image, tuple(int(x*255)
+                              for x in image_processor.image_mean))
+        image = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
+        return image
+    else:
+        return image_processor(image, return_tensors='pt')['pixel_values'][0]
+
+def sliding_windows(matrix, window_size, stride):
+    height, width, c = matrix.shape
+    window_rows = (height - window_size[0]) // stride + 1
+    window_cols = (width - window_size[1]) // stride + 1
+    windows = []
+    for i in range(window_rows):
+        for j in range(window_cols):
+            window = matrix[i * stride:i * stride + window_size[0], j * stride:j * stride + window_size[1], :]
+            windows.append(window)
+    return windows
+
+def get_patches(image, stride):
+    image_array = np.array(image)
+    windows = sliding_windows(image_array, window_size=(stride, stride), stride=stride)
+    return windows
+
+def highres_process_images(image, image_processor, model_cfg, base_reso):
+    predefined_ratios = [(2, 2), (1, 4), (4, 1)]
+    predefined_reso_list = [(w * base_reso, h * base_reso) for w, h in predefined_ratios]
+    predefined_aspect_ratios = np.array([w / h for w, h in predefined_ratios])
+
+    image_width, image_height = image.size
+    aspect_ratio = image_width / image_height
+    ar_errors = predefined_aspect_ratios - aspect_ratio
+    predefined_bucket_id = np.abs(ar_errors).argmin()
+    reso = predefined_reso_list[predefined_bucket_id]
+
+    # need resize
+    if image_width > reso[0] or image_height > reso[1]:
+        image_resize = image.resize(reso, Image.Resampling.LANCZOS)
+    else:
+        image_resize = image.copy()
+
+    w, h = image_resize.size
+    result = Image.new(image_resize.mode, reso, tuple(int(x * 255) for x in image_processor.image_mean))
+    paste_x = (reso[0] - w) // 2
+    paste_y = (reso[1] - h) // 2
+    result.paste(image_resize, (paste_x, paste_y))
+
+    patches = get_patches(result, base_reso)
+    patch_list = []
+    for patch in patches:
+        pt = image_processor.preprocess(patch, return_tensors="pt")["pixel_values"][0]
+        patch_list.append(pt)
+
+    global_feat = process_image(image, image_processor, model_cfg)
+    patch_tensor = torch.stack(patch_list)
+    local_feat = torch.mean(patch_tensor, dim=0)
+    return local_feat, global_feat

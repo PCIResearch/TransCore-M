@@ -1,1 +1,3 @@
 from .language_model.transcorem_llama import TransCoreMLlamaForCausalLM, TransCoreMConfig
+from .language_model.transcorem_qwen import TransCoreMQWenForCausalLM, TransCoreMQWenConfig
+from .language_model.qwen.tokenization_qwen import QWenTokenizer

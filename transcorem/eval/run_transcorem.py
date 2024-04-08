@@ -1,11 +1,12 @@
 import argparse
 import torch
+from abc import abstractproperty
 
 from transcorem.constants import IMAGE_TOKEN_INDEX, DEFAULT_IMAGE_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN
 from transcorem.conversation import conv_templates, SeparatorStyle
 from transcorem.model.builder import load_pretrained_model
 from transcorem.utils import disable_torch_init
-from transcorem.mm_utils import tokenizer_image_token, get_model_name_from_path, KeywordsStoppingCriteria
+from transcorem.mm_utils import tokenizer_image_token, get_model_name_from_path, KeywordsStoppingCriteria, highres_process_images
 
 from PIL import Image
 
@@ -54,7 +55,11 @@ def eval_model(args_params):
     prompt = conv.get_prompt()
 
     image = load_image(args_params["image_file"])
-    image_tensor = image_processor.preprocess(image, return_tensors='pt')['pixel_values'].half().cuda()
+    args = abstractproperty()
+    args.image_aspect_ratio = 'pad'
+    image_tensor = highres_process_images(image, image_processor, args, base_reso=336)
+    image_tensor = [patch.unsqueeze(0).to("cuda", dtype=torch.float16) for patch in image_tensor]
+    # image_tensor = image_processor.preprocess(image, return_tensors='pt')['pixel_values'].half().cuda()
 
     input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
 
@@ -68,7 +73,7 @@ def eval_model(args_params):
             images=image_tensor,
             do_sample=True,
             temperature=0.2,
-            max_new_tokens=1024,
+            max_new_tokens=2048,
             use_cache=True,
             stopping_criteria=[stopping_criteria])
 

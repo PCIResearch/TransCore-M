@@ -27,10 +27,20 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
 
     ## load Trans-Core M model.
     config_param.model_path = model_path
-    tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
-    model = TransCoreMLlamaForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
+    # tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
+    # model = TransCoreMLlamaForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
 
-    image_processor = None
+    model = TransCoreMQWenForCausalLM.from_pretrained(model_path, **kwargs)
+    tokenizer = QWenTokenizer.from_pretrained(
+        model_path,
+        model_max_length=2048,
+        pad_token="<|endoftext|>",
+        bos_token="<|im_start|>",
+        eos_token="<|im_end|>",
+        use_fast=False,
+        padding_side="right",
+    )
+    tokenizer.pad_token_id = tokenizer.eod_id
 
     mm_use_im_start_end = getattr(model.config, "mm_use_im_start_end", False)
     mm_use_im_patch_token = getattr(model.config, "mm_use_im_patch_token", True)
